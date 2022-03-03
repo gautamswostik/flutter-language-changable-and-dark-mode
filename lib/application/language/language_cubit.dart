@@ -10,13 +10,16 @@ part 'language_state.dart';
 
 class LanguageCubit extends Cubit<LanguageState> {
   LanguageCubit()
-      : super(
-          LanguageLoaded(
-            locale: Locale(Languages.languages[0].languageCode),
+      : super(LanguageLoaded(
+          locale: Locale(
+            Languages.languages[0].languageCode,
           ),
-        );
+        ));
 
   void toggle(LanguageEntity languageEntity) async {
+    final languageBox = await Hive.openBox(HiveBox.languageBox);
+    await languageBox.put('language', languageEntity.languageCode);
+    languageBox.close();
     emit(
       LanguageLoaded(
         locale: Locale(
@@ -27,9 +30,7 @@ class LanguageCubit extends Cubit<LanguageState> {
   }
 
   void getLang() async {
-    final languageBox = await Hive.openBox(HiveBox.languageBox);
-    String entity = languageBox.get('language');
-    languageBox.close();
+    String entity = await lang;
     emit(
       LanguageLoaded(
         locale: Locale(
@@ -37,6 +38,12 @@ class LanguageCubit extends Cubit<LanguageState> {
         ),
       ),
     );
+  }
+
+  Future<String> get lang async {
+    final languageBox = await Hive.openBox(HiveBox.languageBox);
+    String entity = languageBox.get('language');
     languageBox.close();
+    return entity;
   }
 }
