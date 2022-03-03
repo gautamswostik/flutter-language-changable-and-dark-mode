@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:hive_flutter/hive_flutter.dart';
-import 'package:lang_and_dark/app_setup/hive/hive_box.dart';
-import 'package:lang_and_dark/app_setup/language/entities/language_entity.dart';
 import 'package:lang_and_dark/application/language/language_cubit.dart';
 import 'package:lang_and_dark/utils/apptexts/app_texts.dart';
 import 'package:lang_and_dark/app_setup/language/languages.dart';
@@ -32,10 +29,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       child: ListTile(
                         onTap: () async {
                           BlocProvider.of<LanguageCubit>(context).toggle(e);
-                          final languageBox =
-                              await Hive.openBox(HiveBox.languageBox);
-                          await languageBox.put('language', e.languageCode);
-                          languageBox.close();
+                          Navigator.of(context).pop();
                         },
                         leading: const Icon(Icons.language_sharp),
                         title: Text(e.languageName.translateTo(context)),
@@ -43,27 +37,6 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   )
                   .toList(),
-              // const PopupMenuItem(
-              //   child: ListTile(
-              //     leading: Icon(Icons.add),
-              //     title: Text('Item 1'),
-              //   ),
-              // ),
-              // const PopupMenuItem(
-              //   child: ListTile(
-              //     leading: Icon(Icons.anchor),
-              //     title: Text('Item 2'),
-              //   ),
-              // ),
-              // const PopupMenuItem(
-              //   child: ListTile(
-              //     leading: Icon(Icons.article),
-              //     title: Text('Item 3'),
-              //   ),
-              // ),
-              // const PopupMenuDivider(),
-              // const PopupMenuItem(child: Text('Item A')),
-              // const PopupMenuItem(child: Text('Item B')),
             ],
           ),
         ],

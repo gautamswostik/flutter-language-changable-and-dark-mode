@@ -25,6 +25,13 @@ class MyApp extends HookWidget {
             return MaterialApp(
               debugShowCheckedModeBanner: false,
               home: const HomeScreen(),
+              theme: ThemeData(
+                primarySwatch: Colors.purple,
+                appBarTheme: const AppBarTheme(
+                  elevation: 0.0,
+                  centerTitle: true,
+                ),
+              ),
               supportedLocales: [
                 ...Languages.languages
                     .map((e) => Locale(e.languageCode))
