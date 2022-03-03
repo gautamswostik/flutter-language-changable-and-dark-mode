@@ -2,13 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:lang_and_dark/application/language/language_cubit.dart';
+import 'package:lang_and_dark/application/theme/theme_cubit.dart';
 import 'package:lang_and_dark/utils/apptexts/app_texts.dart';
 import 'package:lang_and_dark/app_setup/language/languages.dart';
 import 'package:lang_and_dark/utils/extensions/string_extensions.dart';
 
 class HomeScreen extends StatefulHookWidget {
-  const HomeScreen({Key? key}) : super(key: key);
-
+  const HomeScreen({
+    Key? key,
+    required this.themeValue,
+  }) : super(key: key);
+  final bool themeValue;
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
@@ -18,6 +22,11 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: Switch(
+            value: widget.themeValue,
+            onChanged: (value) {
+              BlocProvider.of<ThemeCubit>(context).toggleTheme(value);
+            }),
         title: Text(AppTexts.home.translateTo(context)),
         actions: [
           PopupMenuButton(
